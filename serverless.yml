@@ -1,0 +1,59 @@
+service: project-test
+
+plugins:
+  - serverless-offline
+  - serverless-add-api-key
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:648789605306:table/alumnos
+
+custom:
+  apiKeys:
+    dev:
+      - name: myFirstApiKey
+        value: osmanthus-wine-taste-the-same-as-i-remember
+        usagePlan:
+          name: free
+          description: plan-free
+          quota:
+            limit: 300
+            period: DAY
+          throttle:
+            burstLimit: 100
+            rateLimit: 20
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+          private: true
+          cors: true
+      - http:
+          method: ANY
+          path: '{proxy+}'
+          private: false
+          cors: true
+      - http:
+          method: GET
+          path: 'api/docs'
+          private: false
+      - http:
+          method: ANY
+          path: 'alumnos'
+          private: true
+          cors: true
+      - http:
+          method: ANY
+          path: 'alumnos/{id}'
+          private: true
+          cors: true
