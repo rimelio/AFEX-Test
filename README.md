@@ -15,6 +15,11 @@
 $ npm install
 ```
 
+```bash
+TOKEN = <YOUR_GIT_TOKEN>
+OWNER = <REPOSITORY_OWNER>
+REPO  = <REPOSITORY_NAME>
+```
 ## Running the app
 
 ```bash
